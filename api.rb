@@ -8,5 +8,5 @@ get "/:id" do
   id, splat, captures = ["id", "splat", "captures"].map do |p| 
     new_params.delete(p)
   end
-  JSON.pretty_generate Maps.new.send(id, params)
+  JSON.pretty_generate Maps.new.send(id, new_params)
 end

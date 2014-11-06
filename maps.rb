@@ -9,17 +9,17 @@ class Maps
     @key = ENV['KEY'] || abort("KEY not defined")
   end
 
-  def apis
+  def resources
     { 
-      nearby: "place/nearbysearch/json",
-      details: "place/details/json",
-      directions: "directions/json",
-      geocode: "geocode/json",
+      nearby:      ["place/nearbysearch/json", "results"],
+      details:     ["place/details/json", "result"],
+      directions:  ["directions/json", "routes"],
+      geocode:     ["geocode/json", "results"],
     }
   end
 
   def request(resource, params)
-    api[apis[resource]].get(params: params.merge(key: key)) do |response|
+    api[resource].get(params: params.merge(key: key)) do |response|
       JSON.parse(response).tap do |result|
         status = result.delete("status")
         raise status if status != "OK"
@@ -27,19 +27,9 @@ class Maps
     end
   end
 
-  def nearby(params)
-    request(:nearby, params)["results"]
-  end
-
-  def details(params)
-    request(:details, params)["result"]
-  end
-
-  def directions(params)
-    request(:directions, params)["routes"]
-  end
-
-  def geocode(params)
-    request(:geocode, params)["results"]
+  def method_missing(m, *args, &block)
+    resource = resources[m]
+    super unless resource
+    request(resource.first, *args)[resource.last]
   end
 end
