@@ -11,10 +11,10 @@ class Maps
 
   def resources
     { 
-      nearby:      ["place/nearbysearch/json", "results"],
-      details:     ["place/details/json", "result"],
-      directions:  ["directions/json", "routes"],
-      geocode:     ["geocode/json", "results"],
+      nearby:      ["place/nearbysearch/json",  "results"],
+      details:     ["place/details/json",       "result"],
+      directions:  ["directions/json",          "routes"],
+      geocode:     ["geocode/json",             "results"],
     }
   end
 
